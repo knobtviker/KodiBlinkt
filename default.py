@@ -5,6 +5,7 @@ import xbmcgui
 
 import math
 import time
+import datetime
 
 from blinkt import set_pixel, show, clear
 
@@ -14,18 +15,16 @@ LED_CPU_TEMPERATURE = 1
 
 #LED BRIGHTNESS PER POSITION
 LED_STATUS_BRIGHTNESS = 0.0
-#LED_CPU_TEMPERATURE_BRIGHTNESS = 0.0
+LED_CPU_TEMPERATURE_BRIGHTNESS = 0.0
 
 #LED COLOR PER POSITION
 COLOR_BREATHE = [255, 255, 255]
 COLOR_CPU_TEMPERATURE = [255, 0, 0]
 
 #HELPER VARS
-reds = [0, 0, 0, 0, 0, 16, 64, 255, 64, 16, 0, 0, 0, 0, 0]
 increasing = True
 
 '''
-title = xbmc.getInfoLabel('System.CPUTemperature') 60oC
 line1 = xbmc.getInfoLabel('System.CpuUsage') long ass strings, parse by %
 line2 = xbmc.getInfoLabel('System.Memory(used.percent)') 15%
 line3 = xbmc.getInfoLabel('System.FPS') izracunaj  koliko posto od 100 max fps
@@ -89,19 +88,28 @@ while True:
                 set_pixel(i , 255, 255, 0, 0.1)
     else:
         #this block is for stats when not playing.
-        if increasing:
-            LED_STATUS_BRIGHTNESS += 0.1
+        now = datetime.datetime.now().time()
+        start = datetime.time(8,00)
+        end = datetime.time(20,00)
+        if start <= now <= end:
+            if increasing:
+                LED_STATUS_BRIGHTNESS += 0.1
+            else:
+                LED_STATUS_BRIGHTNESS -= 0.1
+ 
+            if (LED_STATUS_BRIGHTNESS >= 0.9):
+                increasing = False
+ 
+            if (LED_STATUS_BRIGHTNESS <= 0.1):
+                increasing = True
         else:
-            LED_STATUS_BRIGHTNESS -= 0.1
- 
-        if (LED_STATUS_BRIGHTNESS >= 0.9):
-            increasing = False
- 
-        if (LED_STATUS_BRIGHTNESS <= 0.1):
-            increasing = True
- 		
+            LED_STATUS_BRIGHTNESS = 0.1
+
+        cpuTemperature = xbmc.getInfoLabel('System.CPUTemperature')
+        cpuTemperature = cpuTemperature[:-3]
+        LED_CPU_TEMPERATURE_BRIGHTNESS = float(cpuTemperature)/100.0
         set_pixel(LED_STATUS_BREATHE, COLOR_BREATHE[0], COLOR_BREATHE[1], COLOR_BREATHE[2], LED_STATUS_BRIGHTNESS)
-        set_pixel(1, 0, 0, 0, 0.0)            
+        set_pixel(LED_CPU_TEMPERATURE, COLOR_CPU_TEMPERATURE[0], COLOR_CPU_TEMPERATURE[1], COLOR_CPU_TEMPERATURE[2], LED_CPU_TEMPERATURE_BRIGHTNESS)
         set_pixel(2, 0, 0, 0, 0.0)
         set_pixel(3, 0, 0, 0, 0.0)
         set_pixel(4, 0, 0, 0, 0.0)
