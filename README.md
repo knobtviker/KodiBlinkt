@@ -12,11 +12,13 @@ If XBMC player is buffering, 8 LEDs light up yellow with constant minimum bright
 If XBMC player is not playing, each LED shows system statistics.
 
 ### Idle mode
-* First LED - Glows in white and changes brightness from fade in to fade out and vice versa, aka breathing. 
-
+* First LED - Glows in white and changes brightness from fade in to fade out and vice versa, aka breathing, between 8AM and 8PM. Fixed low brightness during night.
+* Second, third, fourth and fifth LED - Glow orange and show CPU usage per core in according brightness.
+* Sixth LED - Glows red with brightness set as percentage of current temperature over maximum. Maximum CPU temperature is set as 100 Celsius.
+* Seventh LED - Glows blue and shows memory used in brigthness.
+* Eight LED - Glows purple and shows FPS out of max 100in according brightness.
 
 ## TODO:
-* Add more system stats for idle mode using xbmc InfoLabels.
 * Optimize horrible Python code written during the weekend hype hackathon.
 * Figure out how to dynamically link and deploy RPi.GPIO for Kodi from unofficial Kodi repo.
 * Build UI and user settings using xbmcgui building blocks.
