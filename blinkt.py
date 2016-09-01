@@ -1,10 +1,11 @@
 import atexit
 
-try:
-    import RPi.GPIO as GPIO
-except ImportError:
-    exit("This library requires the RPi.GPIO module\nInstall with: sudo pip install RPi.GPIO")
-
+#try:
+import sys
+sys.path.append('/storage/.kodi/addons/python.RPi.GPIO/lib')
+import RPi.GPIO as GPIO
+#except ImportError:
+#    exit("This library requires the RPi.GPIO module\nInstall with: sudo pip install RPi.GPIO")
 
 DAT = 23
 CLK = 24
